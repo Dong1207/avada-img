@@ -1,5 +1,9 @@
-import { S3Client, PutObjectCommand, DeleteObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
-import { Upload } from '@aws-sdk/lib-storage';
+import {
+  S3Client,
+  DeleteObjectCommand,
+  HeadObjectCommand,
+} from "@aws-sdk/client-s3";
+import {Upload} from "@aws-sdk/lib-storage";
 
 /**
  * S3Service - Class to handle AWS S3 operations using AWS SDK v3
@@ -7,13 +11,13 @@ import { Upload } from '@aws-sdk/lib-storage';
 class S3Service {
   constructor() {
     this.s3Client = new S3Client({
-      region: process.env.AWS_REGION || 'us-east-1',
+      region: process.env.AWS_REGION,
       credentials: {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-      }
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      },
     });
-    
+
     this.bucketName = process.env.S3_BUCKET_NAME;
   }
 
@@ -23,11 +27,11 @@ class S3Service {
    * @param {string} fileName - File name (key) in S3
    * @param {string} contentType - Content type (e.g., 'image/webp')
    * @returns {Promise<Object>} Upload result
-   * 
+   *
    * Note: ACL is not used as modern S3 buckets use bucket policies instead.
    * Ensure your bucket has a bucket policy that allows public read access.
    */
-  async uploadFile(fileBuffer, fileName, contentType = 'image/webp') {
+  async uploadFile(fileBuffer, fileName, contentType = "image/webp") {
     try {
       const upload = new Upload({
         client: this.s3Client,
@@ -35,15 +39,15 @@ class S3Service {
           Bucket: this.bucketName,
           Key: fileName,
           Body: fileBuffer,
-          ContentType: contentType
+          ContentType: contentType,
           // ACL removed - use bucket policy for public access instead
-        }
+        },
       });
 
       const result = await upload.done();
       return result;
     } catch (error) {
-      console.error('S3 upload error:', error);
+      console.error("S3 upload error:", error);
       throw new Error(`Failed to upload file to S3: ${error.message}`);
     }
   }
@@ -56,14 +60,14 @@ class S3Service {
   async deleteFile(fileName) {
     const command = new DeleteObjectCommand({
       Bucket: this.bucketName,
-      Key: fileName
+      Key: fileName,
     });
 
     try {
       const result = await this.s3Client.send(command);
       return result;
     } catch (error) {
-      console.error('S3 delete error:', error);
+      console.error("S3 delete error:", error);
       throw new Error(`Failed to delete file from S3: ${error.message}`);
     }
   }
@@ -74,7 +78,7 @@ class S3Service {
    * @returns {string} Public URL of the file
    */
   getFileUrl(fileName) {
-    return `https://${this.bucketName}.s3.${process.env.AWS_REGION || 'us-east-1'}.amazonaws.com/${fileName}`;
+    return `https://${this.bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
   }
 
   /**
@@ -85,14 +89,17 @@ class S3Service {
   async fileExists(fileName) {
     const command = new HeadObjectCommand({
       Bucket: this.bucketName,
-      Key: fileName
+      Key: fileName,
     });
 
     try {
       await this.s3Client.send(command);
       return true;
     } catch (error) {
-      if (error.name === 'NotFound' || error.$metadata?.httpStatusCode === 404) {
+      if (
+        error.name === "NotFound" ||
+        error.$metadata?.httpStatusCode === 404
+      ) {
         return false;
       }
       throw error;
