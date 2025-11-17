@@ -1,37 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Avada Image</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="image-display-container">
-    <div class="logo-container">
-      <img src="assets/avada-logo.png" alt="Avada Logo" class="logo logo-top-left" onerror="this.style.display='none'; document.querySelector('.logo-text-top-left').style.display='flex';">
-      <img src="assets/avada-logo.png" alt="Avada Logo" class="logo logo-top-right" onerror="this.style.display='none'; document.querySelector('.logo-text-top-right').style.display='flex';">
-      <img src="assets/avada-logo.png" alt="Avada Logo" class="logo logo-bottom-left" onerror="this.style.display='none'; document.querySelector('.logo-text-bottom-left').style.display='flex';">
-      <img src="assets/avada-logo.png" alt="Avada Logo" class="logo logo-bottom-right" onerror="this.style.display='none'; document.querySelector('.logo-text-bottom-right').style.display='flex';">
-      
-      <div class="logo logo-top-left logo-text logo-text-top-left">AVADA</div>
-    </div>
-    
-    <div class="loading-spinner" id="loading">
-      <div class="spinner"></div>
-      <p>Loading image...</p>
-    </div>
-    
-    <div class="error-message" id="error" style="display: none;">
-      <p id="error-text"></p>
-    </div>
-    
-    <div class="image-wrapper" id="image-wrapper" style="display: none;">
-      <img id="display-image" alt="Display" class="display-image">
-    </div>
-  </div>
-  
-  <script type="module" src="script.js"></script>
-</body>
-</html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avada Image Capture</title>
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="image-display-container">
+      <div class="logo-container">
+        <img
+          src="https://avadaio_assets.storage.googleapis.com/uploads/2024/06/19035036/logo-1.svg"
+          alt="Avada Logo"
+          class="logo logo-top-left"
+          onerror="this.style.display='none'; document.querySelector('.logo-text-top-left').style.display='flex';"
+        />
+        <div class="logo logo-top-left logo-text logo-text-top-left">AVADA</div>
+      </div>
 
+      <div class="loading-spinner" id="loading">
+        <div class="spinner"></div>
+        <p>Loading image...</p>
+      </div>
+
+      <div class="error-message" id="error" style="display: none">
+        <p id="error-text"></p>
+      </div>
+
+      <div class="image-wrapper" id="image-wrapper" style="display: none">
+        <img id="display-image" alt="Display" class="display-image" />
+      </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
