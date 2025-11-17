@@ -1,5 +1,15 @@
 const CLOUDFRONT_URL = import.meta.env.VITE_CLOUDFRONT_URL || '';
 
+function updateMetaTags(imageUrl, pageUrl) {
+  const ogImage = document.getElementById('og-image');
+  const ogUrl = document.getElementById('og-url');
+  const twitterImage = document.getElementById('twitter-image');
+
+  if (ogImage) ogImage.setAttribute('content', imageUrl);
+  if (ogUrl) ogUrl.setAttribute('content', pageUrl);
+  if (twitterImage) twitterImage.setAttribute('content', imageUrl);
+}
+
 function getImageIdFromUrl() {
   const path = window.location.pathname;
   const cleanPath = path.replace(/^\/|\/$/g, '');
@@ -89,5 +99,8 @@ function showImage(imageUrl, imageId) {
   }
 
   const imageUrl = `${CLOUDFRONT_URL}/${imageId}`;
+  const pageUrl = window.location.href;
+
+  updateMetaTags(imageUrl, pageUrl);
   showImage(imageUrl, imageId);
 })();
