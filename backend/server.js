@@ -15,7 +15,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
 // Initialize S3 Service
 const s3Service = new S3Service();
@@ -70,12 +70,11 @@ app.post('/api/upload', upload.single('image'), async (req, res) => {
     await s3Service.uploadFile(
       processedImage,
       shortenedFileName,
-      'image/webp',
-      'public-read'
+      'image/webp'
     );
 
     // Return frontend URL with shortened path
-    const imageUrl = `${FRONTEND_URL}/i/${shortenedFileName}`;
+    const imageUrl = `${FRONTEND_URL}/i/${shortId}`;
 
     res.json({
       success: true,

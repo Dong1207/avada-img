@@ -22,10 +22,12 @@ class S3Service {
    * @param {Buffer} fileBuffer - File buffer to upload
    * @param {string} fileName - File name (key) in S3
    * @param {string} contentType - Content type (e.g., 'image/webp')
-   * @param {string} acl - Access control list (default: 'public-read')
    * @returns {Promise<Object>} Upload result
+   * 
+   * Note: ACL is not used as modern S3 buckets use bucket policies instead.
+   * Ensure your bucket has a bucket policy that allows public read access.
    */
-  async uploadFile(fileBuffer, fileName, contentType = 'image/webp', acl = 'public-read') {
+  async uploadFile(fileBuffer, fileName, contentType = 'image/webp') {
     try {
       const upload = new Upload({
         client: this.s3Client,
@@ -33,8 +35,8 @@ class S3Service {
           Bucket: this.bucketName,
           Key: fileName,
           Body: fileBuffer,
-          ContentType: contentType,
-          ACL: acl
+          ContentType: contentType
+          // ACL removed - use bucket policy for public access instead
         }
       });
 
