@@ -1,34 +1,24 @@
-// Get CloudFront URL from Vite environment variables
-// Set VITE_CLOUDFRONT_URL in .env file or environment variables
 const CLOUDFRONT_URL = import.meta.env.VITE_CLOUDFRONT_URL || '';
 
-// Get imageId from URL path
-// URL format: /i/{imageId} or /{imageId}
-// If no extension, automatically add .webp
 function getImageIdFromUrl() {
   const path = window.location.pathname;
-  
-  // Remove leading and trailing slashes
   const cleanPath = path.replace(/^\/|\/$/g, '');
-  
+
   let imageId = null;
-  
-  // If path starts with 'i/', extract the part after it
+
   if (cleanPath.startsWith('i/')) {
     imageId = cleanPath.replace('i/', '');
   } else {
-    // Otherwise, return the whole path as imageId
     imageId = cleanPath || null;
   }
-  
-  // If imageId exists and has no extension, add .webp
+
   if (imageId) {
     const hasExtension = /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(imageId);
     if (!hasExtension) {
       imageId = `${imageId}.webp`;
     }
   }
-  
+
   return imageId;
 }
 
@@ -37,7 +27,7 @@ function showError(message) {
   const errorEl = document.getElementById('error');
   const errorTextEl = document.getElementById('error-text');
   const imageWrapperEl = document.getElementById('image-wrapper');
-  
+
   if (loadingEl) loadingEl.style.display = 'none';
   if (imageWrapperEl) imageWrapperEl.style.display = 'none';
   if (errorEl) {
@@ -46,42 +36,58 @@ function showError(message) {
   }
 }
 
-function showImage(imageUrl) {
+function formatDimensions(width, height) {
+  return `${width} × ${height}`;
+}
+
+function showImage(imageUrl, imageId) {
   const loadingEl = document.getElementById('loading');
   const errorEl = document.getElementById('error');
   const imageWrapperEl = document.getElementById('image-wrapper');
   const displayImageEl = document.getElementById('display-image');
-  
+  const imageIdEl = document.getElementById('image-id');
+  const dimensionsEl = document.getElementById('image-dimensions');
+
   if (loadingEl) loadingEl.style.display = 'none';
   if (errorEl) errorEl.style.display = 'none';
-  
-  if (displayImageEl && imageWrapperEl) {
-    displayImageEl.src = imageUrl;
-    displayImageEl.onerror = function() {
-      showError('Failed to load image');
-    };
-    displayImageEl.onload = function() {
-      imageWrapperEl.style.display = 'flex';
-    };
-  }
+
+  if (!displayImageEl || !imageWrapperEl) return;
+
+  displayImageEl.src = imageUrl;
+
+  displayImageEl.onerror = () => {
+    showError('Failed to load image. The image may not exist or there was a network error.');
+  };
+
+  displayImageEl.onload = () => {
+    imageWrapperEl.style.display = 'block';
+
+    if (imageIdEl) {
+      imageIdEl.textContent = imageId;
+    }
+
+    if (dimensionsEl) {
+      dimensionsEl.textContent = formatDimensions(
+        displayImageEl.naturalWidth,
+        displayImageEl.naturalHeight
+      );
+    }
+  };
 }
 
-// Initialize
 (function() {
   const imageId = getImageIdFromUrl();
-  
+
   if (!imageId) {
-    showError('No image ID provided in URL');
+    showError('No image ID provided in URL. Please provide a valid image path.');
     return;
   }
-  
+
   if (!CLOUDFRONT_URL) {
     showError('CloudFront URL not configured. Please set VITE_CLOUDFRONT_URL in your .env file.');
     return;
   }
-  
-  // Construct CloudFront URL
-  const imageUrl = `${CLOUDFRONT_URL}/${imageId}`;
-  showImage(imageUrl);
-})();
 
+  const imageUrl = `${CLOUDFRONT_URL}/${imageId}`;
+  showImage(imageUrl, imageId);
+})();
