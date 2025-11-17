@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'a2-avada-image-backend',
+      name: 'avada-image-backend',
       script: './server.js',
       instances: 1,
       exec_mode: 'fork',
