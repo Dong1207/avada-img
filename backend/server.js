@@ -9,11 +9,6 @@ import S3Service from "./services/S3Service.js";
 
 dotenv.config();
 
-// Configure shortid characters once at startup
-shortid.characters(
-  "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-);
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 const FRONTEND_URL = process.env.FRONTEND_URL;
