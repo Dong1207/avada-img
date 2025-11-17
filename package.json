@@ -1,0 +1,17 @@
+{
+  "name": "a2-avada-image",
+  "version": "1.0.0",
+  "description": "Image upload service with S3 storage and frontend display",
+  "main": "server.js",
+  "scripts": {
+    "server": "cd backend && npm run dev",
+    "install-all": "npm install && cd backend && npm install"
+  },
+  "keywords": ["image", "upload", "s3", "sharp"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
+
