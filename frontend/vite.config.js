@@ -1,18 +1,18 @@
-import { defineConfig } from 'vite';
-import { resolve } from 'path';
-import { copyFileSync, existsSync, mkdirSync } from 'fs';
+import {defineConfig} from "vite";
+import {resolve} from "path";
+import {copyFileSync, existsSync, mkdirSync, cpSync} from "fs";
 
 export default defineConfig({
   // Vite automatically loads .env files and exposes VITE_* variables
   // No need to define them manually
   build: {
-    outDir: 'dist',
-    minify: 'terser',
+    outDir: "dist",
+    minify: "terser",
     terserOptions: {
       compress: {
         drop_console: true, // Xóa console.log
         drop_debugger: true, // Xóa debugger
-        pure_funcs: ['console.log', 'console.info', 'console.debug'], // Xóa các hàm console
+        pure_funcs: ["console.log", "console.info", "console.debug"], // Xóa các hàm console
         passes: 3, // Chạy nhiều lần để compress tốt hơn
       },
       mangle: {
@@ -28,45 +28,58 @@ export default defineConfig({
     },
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
+        main: resolve(__dirname, "index.html"),
       },
       output: {
         // Minify tên file
-        entryFileNames: 'assets/[hash].js',
-        chunkFileNames: 'assets/[hash].js',
-        assetFileNames: 'assets/[hash].[ext]',
+        entryFileNames: "assets/[hash].js",
+        chunkFileNames: "assets/[hash].js",
+        assetFileNames: "assets/[hash].[ext]",
       },
     },
-    cssMinify: 'esbuild', // Minify CSS (esbuild is built-in, no extra dependency needed)
+    cssMinify: "esbuild", // Minify CSS (esbuild is built-in, no extra dependency needed)
     cssCodeSplit: false, // Không split CSS
   },
   plugins: [
     {
-      name: 'copy-redirects',
+      name: "copy-files",
       closeBundle() {
-        // Copy _redirects file to dist (only in build mode)
-        if (process.env.NODE_ENV === 'production' || process.argv.includes('build')) {
+        // Copy files to dist (only in build mode)
+        if (
+          process.env.NODE_ENV === "production" ||
+          process.argv.includes("build")
+        ) {
+          const distPath = resolve(__dirname, "dist");
+
+          // Ensure dist directory exists
+          if (!existsSync(distPath)) {
+            mkdirSync(distPath, {recursive: true});
+          }
+
+          // Copy functions/ folder
           try {
-            const redirectsPath = resolve(__dirname, '_redirects');
-            const distPath = resolve(__dirname, 'dist');
-            const destPath = resolve(distPath, '_redirects');
-            
-            // Check if _redirects file exists
-            if (!existsSync(redirectsPath)) {
-              console.warn('_redirects file not found, skipping copy');
-              return;
+            const functionsPath = resolve(__dirname, "functions");
+            const destFunctionsPath = resolve(distPath, "functions");
+
+            if (existsSync(functionsPath)) {
+              cpSync(functionsPath, destFunctionsPath, {recursive: true});
+              console.log("✓ Copied functions/ to dist");
             }
-            
-            // Ensure dist directory exists
-            if (!existsSync(distPath)) {
-              mkdirSync(distPath, { recursive: true });
-            }
-            
-            // Copy file
-            copyFileSync(redirectsPath, destPath);
-            console.log('✓ Copied _redirects to dist');
           } catch (err) {
-            console.warn('Could not copy _redirects file:', err.message);
+            console.warn("Could not copy functions/:", err.message);
+          }
+
+          // Copy _routes.json
+          try {
+            const routesPath = resolve(__dirname, "_routes.json");
+            const destRoutesPath = resolve(distPath, "_routes.json");
+
+            if (existsSync(routesPath)) {
+              copyFileSync(routesPath, destRoutesPath);
+              console.log("✓ Copied _routes.json to dist");
+            }
+          } catch (err) {
+            console.warn("Could not copy _routes.json:", err.message);
           }
         }
       },

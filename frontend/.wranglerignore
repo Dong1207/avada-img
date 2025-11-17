@@ -1,0 +1,13 @@
+# Development files
+.env
+.env.example
+.gitignore
+node_modules/
+package.json
+package-lock.json
+vite.config.js
+wrangler.toml
+README.md
+
+# Build output (we deploy source files, not build)
+dist/

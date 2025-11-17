@@ -1,0 +1,4 @@
+# Local development environment variables for Wrangler
+# Copy this file to .dev.vars and fill in your values
+
+VITE_CLOUDFRONT_URL=https://your-cloudfront-distribution.cloudfront.net

@@ -1,0 +1,11 @@
+name = "avada-image"
+compatibility_date = "2024-01-01"
+
+pages_build_output_dir = "dist"
+
+# Environment variables are set in:
+# - Local dev: .dev.vars file (not committed to git)
+# - Production: Cloudflare Dashboard or via wrangler CLI
+#
+# To set in production:
+# npx wrangler pages secret put VITE_CLOUDFRONT_URL --project-name=avada-image

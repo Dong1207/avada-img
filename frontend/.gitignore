@@ -2,3 +2,8 @@ node_modules/
 dist/
 .DS_Store
 
+# Environment variables (contains secrets)
+.dev.vars
+.env
+.env.local
+
