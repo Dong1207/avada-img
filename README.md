@@ -94,8 +94,11 @@ Output ở folder `dist/`. Deploy lên Cloudflare Pages (xem hướng dẫn tron
 ```
 a2-avada-image/
 ├── backend/
-│   ├── server.js          # Express server
+│   ├── server.js          # Express server (ESM)
+│   ├── services/
+│   │   └── S3Service.js   # AWS S3 service class
 │   ├── package.json
+│   ├── nodemon.json       # Nodemon config
 │   └── .env.example
 ├── frontend/
 │   ├── index.html          # HTML chính
