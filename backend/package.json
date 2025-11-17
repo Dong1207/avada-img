@@ -9,17 +9,15 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.932.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
     "express": "5.1.0",
     "multer": "2.0.2",
     "sharp": "^0.34.5",
-    "@aws-sdk/client-s3": "3.932.0",
-    "@aws-sdk/lib-storage": "3.932.0",
-    "dotenv": "^16.3.1",
-    "cors": "^2.8.5",
     "shortid": "^2.2.16"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
   }
 }
-

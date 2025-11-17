@@ -1,9 +1,9 @@
 import {
   S3Client,
+  PutObjectCommand,
   DeleteObjectCommand,
   HeadObjectCommand,
 } from "@aws-sdk/client-s3";
-import {Upload} from "@aws-sdk/lib-storage";
 
 /**
  * S3Service - Class to handle AWS S3 operations using AWS SDK v3
@@ -32,19 +32,16 @@ class S3Service {
    * Ensure your bucket has a bucket policy that allows public read access.
    */
   async uploadFile(fileBuffer, fileName, contentType = "image/webp") {
-    try {
-      const upload = new Upload({
-        client: this.s3Client,
-        params: {
-          Bucket: this.bucketName,
-          Key: fileName,
-          Body: fileBuffer,
-          ContentType: contentType,
-          // ACL removed - use bucket policy for public access instead
-        },
-      });
+    const command = new PutObjectCommand({
+      Bucket: this.bucketName,
+      Key: fileName,
+      Body: fileBuffer,
+      StorageClass: "STANDARD_IA",
+      ContentType: contentType,
+    });
 
-      const result = await upload.done();
+    try {
+      const result = await this.s3Client.send(command);
       return result;
     } catch (error) {
       console.error("S3 upload error:", error);
