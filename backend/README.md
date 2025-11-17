@@ -65,16 +65,16 @@ pm2 start ecosystem.config.cjs
 pm2 status
 
 # Xem logs
-pm2 logs a2-avada-image-backend
+pm2 logs avada-image-backend
 
 # Restart
-pm2 restart a2-avada-image-backend
+pm2 restart avada-image-backend
 
 # Stop
-pm2 stop a2-avada-image-backend
+pm2 stop avada-image-backend
 
 # Xóa khỏi PM2
-pm2 delete a2-avada-image-backend
+pm2 delete avada-image-backend
 
 # Monitor
 pm2 monit
