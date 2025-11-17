@@ -53,6 +53,33 @@ npm run dev
 npm start
 ```
 
+### Production mode với PM2 (khuyến nghị):
+```bash
+# Cài đặt PM2 (nếu chưa có)
+npm install -g pm2
+
+# Start với PM2
+pm2 start ecosystem.config.cjs
+
+# Xem status
+pm2 status
+
+# Xem logs
+pm2 logs a2-avada-image-backend
+
+# Restart
+pm2 restart a2-avada-image-backend
+
+# Stop
+pm2 stop a2-avada-image-backend
+
+# Xóa khỏi PM2
+pm2 delete a2-avada-image-backend
+
+# Monitor
+pm2 monit
+```
+
 Server sẽ chạy tại `http://localhost:5000` (hoặc port được cấu hình trong `.env`).
 
 ## Cấu trúc code
@@ -64,6 +91,7 @@ backend/
 │   └── S3Service.js       # AWS S3 service class
 ├── package.json
 ├── nodemon.json           # Nodemon config
+├── ecosystem.config.cjs   # PM2 ecosystem config
 ├── .env.example           # Environment variables template
 └── README.md
 ```

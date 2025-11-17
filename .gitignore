@@ -15,4 +15,5 @@ frontend/.env.local
 # Backend
 backend/uploads/
 backend/.env
+backend/logs/
 
