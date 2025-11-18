@@ -23,9 +23,7 @@ app.use(express.json());
 // Configure multer for memory storage
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB
-  },
+  limits: {fileSize: 10 * 1024 * 1024}, // 10MB
   fileFilter: (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|gif|webp/;
     const extname = allowedTypes.test(
@@ -59,18 +57,12 @@ app.post("/api/upload", upload.single("image"), async (req, res) => {
       .toBuffer();
 
     // Upload to S3 using S3Service
-    await s3Service.uploadFile(processedImage, shortenedFileName, "image/webp");
+    await s3Service.uploadFile(processedImage, shortenedFileName);
 
     // Return frontend URL with shortened path
     const imageUrl = `${FRONTEND_URL}/i/${shortId}`;
 
-    res.json({
-      success: true,
-      url: imageUrl,
-      imageId: shortId,
-      originalSize: req.file.size,
-      processedSize: processedImage.length,
-    });
+    res.json({success: true, url: imageUrl, imageId: shortId});
   } catch (error) {
     console.error("Upload error:", error);
     res

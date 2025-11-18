@@ -93,12 +93,9 @@ class S3Service {
       await this.s3Client.send(command);
       return true;
     } catch (error) {
-      if (
-        error.name === "NotFound" ||
-        error.$metadata?.httpStatusCode === 404
-      ) {
+      if (error.name === "NotFound" || error.$metadata?.httpStatusCode === 404)
         return false;
-      }
+
       throw error;
     }
   }
