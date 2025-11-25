@@ -40,6 +40,12 @@ function formatDimensions(width, height) {
   return `${width} × ${height}`;
 }
 
+function formatFileSize(bytes) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+}
+
 function showImage(imageUrl, imageId) {
   const loadingEl = document.getElementById('loading');
   const errorEl = document.getElementById('error');
@@ -47,6 +53,7 @@ function showImage(imageUrl, imageId) {
   const displayImageEl = document.getElementById('display-image');
   const imageIdEl = document.getElementById('image-id');
   const dimensionsEl = document.getElementById('image-dimensions');
+  const sizeEl = document.getElementById('image-size');
 
   if (loadingEl) loadingEl.style.display = 'none';
   if (errorEl) errorEl.style.display = 'none';
@@ -71,6 +78,14 @@ function showImage(imageUrl, imageId) {
         displayImageEl.naturalWidth,
         displayImageEl.naturalHeight
       );
+    }
+
+    // Get file size from performance API (no extra request)
+    if (sizeEl) {
+      const entry = performance.getEntriesByName(imageUrl)[0];
+      if (entry?.transferSize) {
+        sizeEl.textContent = formatFileSize(entry.transferSize);
+      }
     }
   };
 }
