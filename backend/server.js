@@ -23,7 +23,7 @@ app.use(express.json());
 // Configure multer for memory storage
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: {fileSize: 10 * 1024 * 1024}, // 10MB
+  limits: {fileSize: 30 * 1024 * 1024}, // 30MB
   fileFilter: (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|gif|webp/;
     const extname = allowedTypes.test(
