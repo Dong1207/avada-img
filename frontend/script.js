@@ -47,8 +47,8 @@ function initZoom() {
   const zoomScaleEl = document.getElementById('zoom-scale');
   const zoomInBtn = document.getElementById('zoom-in');
   const zoomOutBtn = document.getElementById('zoom-out');
-  const zoomResetBtn = document.getElementById('zoom-reset');
-  const zoomRotateBtn = document.getElementById('zoom-rotate');
+  const zoomRotateLeftBtn = document.getElementById('zoom-rotate-left');
+  const zoomRotateRightBtn = document.getElementById('zoom-rotate-right');
 
   if (!displayImage || !zoomModal || !zoomImage || !zoomWrapper) return;
 
@@ -223,9 +223,12 @@ function initZoom() {
     updateTransform(true);
   });
 
-  zoomResetBtn.addEventListener('click', resetTransform);
+  zoomRotateLeftBtn?.addEventListener('click', () => {
+    transform.rotate = (transform.rotate - 90 + 360) % 360;
+    updateTransform(true);
+  });
 
-  zoomRotateBtn.addEventListener('click', () => {
+  zoomRotateRightBtn?.addEventListener('click', () => {
     transform.rotate = (transform.rotate + 90) % 360;
     updateTransform(true);
   });
@@ -236,8 +239,8 @@ function initZoom() {
     if (e.key === 'Escape') closeZoom();
     if (e.key === '+' || e.key === '=') zoomInBtn.click();
     if (e.key === '-') zoomOutBtn.click();
-    if (e.key === '0') resetTransform();
-    if (e.key === 'r' || e.key === 'R') zoomRotateBtn.click();
+    if (e.key === 'r') zoomRotateRightBtn?.click();
+    if (e.key === 'R') zoomRotateLeftBtn?.click();
   });
 }
 

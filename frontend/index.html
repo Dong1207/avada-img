@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Avada Image Capture</title>
     <meta name="description" content="View image on Avada Image Capture" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href="https://cdn.shopify.com/s/files/1/0959/0128/6675/files/Avada_Logo_Black.svg" type="image/svg+xml" />
+    <link rel="icon" href="https://cdn.shopify.com/s/files/1/0959/0128/6675/files/Avada_Logo_Black.svg" media="(prefers-color-scheme: light)" />
+    <link rel="icon" href="https://cdn.shopify.com/s/files/1/0959/0128/6675/files/Avada_Logo_Light.svg" media="(prefers-color-scheme: dark)" />
     <link rel="stylesheet" href="style.css" />
 
     <!-- Open Graph / Facebook / Slack / Discord -->
@@ -31,12 +33,15 @@
       <div class="header-content">
         <div class="logo-section">
           <img
-            src="https://avadaio_assets.storage.googleapis.com/uploads/2024/06/19035036/logo-1.svg"
+            src="https://cdn.shopify.com/s/files/1/0959/0128/6675/files/Avada_Logo_Text_Light.png"
             alt="Avada Logo"
-            class="header-logo"
-            onerror="this.style.display='none'; document.querySelector('.header-logo-text').style.display='flex';"
+            class="header-logo header-logo-light"
           />
-          <div class="header-logo-text">AVADA</div>
+          <img
+            src="https://cdn.shopify.com/s/files/1/0959/0128/6675/files/Avada_Logo_Text_Dark.png"
+            alt="Avada Logo"
+            class="header-logo header-logo-dark"
+          />
           <span class="header-divider">|</span>
           <span class="header-title">Image Capture</span>
         </div>
@@ -137,13 +142,13 @@
           </svg>
         </button>
         <div class="divider"></div>
-        <button id="zoom-reset" aria-label="Reset zoom">
+        <button id="zoom-rotate-left" aria-label="Rotate left">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
             <path d="M3 3v5h5"/>
           </svg>
         </button>
-        <button id="zoom-rotate" aria-label="Rotate">
+        <button id="zoom-rotate-right" aria-label="Rotate right">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
             <path d="M21 3v5h-5"/>
