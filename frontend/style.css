@@ -18,6 +18,66 @@
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
+/* Dark Mode */
+[data-theme="dark"] {
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  --bg-primary: #1f2937;
+  --bg-secondary: #111827;
+  --bg-tertiary: #374151;
+  --border-color: #4b5563;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* View Transition API */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Light → Dark: dark expands out (new dark layer on top) */
+.transition-to-dark::view-transition-old(root) {
+  z-index: 1;
+}
+
+.transition-to-dark::view-transition-new(root) {
+  z-index: 9999;
+  animation: circle-expand 0.5s ease-out forwards;
+}
+
+/* Dark → Light: dark shrinks in (old dark layer on top) */
+.transition-to-light::view-transition-old(root) {
+  z-index: 9999;
+  animation: circle-shrink 0.5s ease-in forwards;
+}
+
+.transition-to-light::view-transition-new(root) {
+  z-index: 1;
+}
+
+@keyframes circle-expand {
+  from {
+    clip-path: circle(0% at var(--x, 50%) var(--y, 50%));
+  }
+  to {
+    clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
+  }
+}
+
+@keyframes circle-shrink {
+  from {
+    clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
+  }
+  to {
+    clip-path: circle(0% at var(--x, 50%) var(--y, 50%));
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -445,12 +505,225 @@ body {
   animation: fadeIn 0.3s ease-out;
 }
 
+/* Theme Toggle Button */
+.theme-toggle {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+}
+
+.theme-toggle:hover {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.theme-toggle:active {
+  transform: translateY(0);
+}
+
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
+  width: 20px;
+  height: 20px;
+}
+
+.theme-toggle .icon-moon {
+  display: none;
+}
+
+[data-theme="dark"] .theme-toggle .icon-sun {
+  display: none;
+}
+
+[data-theme="dark"] .theme-toggle .icon-moon {
+  display: block;
+}
+
+/* Image Zoom Modal */
+.zoom-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  overflow: hidden;
+}
+
+.zoom-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.zoom-image-wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+}
+
+.zoom-image-wrapper.dragging {
+  cursor: grabbing;
+}
+
+.zoom-image-wrapper.zoomed-out {
+  cursor: zoom-in;
+}
+
+.zoom-modal-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.zoom-modal-image.with-transition {
+  transition: transform 0.3s ease-out;
+}
+
+/* Zoom Toolbar */
+.zoom-toolbar {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  padding: 0.5rem;
+  border-radius: 8px;
+  z-index: 1001;
+}
+
+.zoom-toolbar button {
+  background: transparent;
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.zoom-toolbar button:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.zoom-toolbar button:active {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.zoom-toolbar button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.zoom-toolbar button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.zoom-toolbar .divider {
+  width: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0.25rem 0;
+}
+
+.zoom-scale {
+  color: white;
+  font-size: 0.8125rem;
+  min-width: 50px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Close Button */
+.zoom-close {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  z-index: 1001;
+}
+
+.zoom-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.zoom-close svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Zoom button on image */
+.display-image {
+  cursor: zoom-in;
+}
+
+.zoom-hint {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.image-content {
+  position: relative;
+}
+
+.image-content:hover .zoom-hint {
+  opacity: 1;
+}
+
 /* Print Styles */
 @media print {
   .header,
   .footer,
   .image-header,
-  .image-footer {
+  .image-footer,
+  .zoom-modal,
+  .theme-toggle {
     display: none;
   }
 

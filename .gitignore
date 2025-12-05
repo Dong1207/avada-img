@@ -17,3 +17,6 @@ backend/uploads/
 backend/.env
 backend/logs/
 
+# ui-ux-pro-max
+.claude/skills/ui-ux-pro-max
+
