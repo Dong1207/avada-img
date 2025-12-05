@@ -1,11 +1,14 @@
 import express from "express";
 import multer from "multer";
 import sharp from "sharp";
-import shortid from "shortid";
+import {customAlphabet} from "nanoid";
 import cors from "cors";
 import path from "path";
 import dotenv from "dotenv";
 import S3Service from "./services/S3Service.js";
+
+// Base62 alphabet (a-z, A-Z, 0-9)
+const nanoid = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", 10);
 
 dotenv.config();
 
@@ -47,7 +50,7 @@ app.post("/api/upload", upload.single("image"), async (req, res) => {
     }
 
     // Generate shortened filename - always use .webp extension
-    const shortId = shortid.generate();
+    const shortId = nanoid();
     const shortenedFileName = `${shortId}.webp`;
 
     // Process image with Sharp: convert to WebP for optimal file size
