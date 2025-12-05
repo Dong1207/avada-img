@@ -8,7 +8,7 @@ import dotenv from "dotenv";
 import S3Service from "./services/S3Service.js";
 
 // Base62 alphabet (a-z, A-Z, 0-9)
-const nanoid = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", 10);
+const nanoid = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", 12);
 
 dotenv.config();
 
