@@ -74,6 +74,37 @@ app.post("/api/upload", upload.single("image"), async (req, res) => {
   }
 });
 
+// ShareX upload endpoint
+app.post("/api/sharex", upload.single("image"), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({error: "No image file provided"});
+    }
+
+    const shortId = nanoid();
+    const shortenedFileName = `${shortId}.webp`;
+
+    const processedImage = await sharp(req.file.buffer)
+      .resize(1920, 1920, {fit: "inside", withoutEnlargement: true})
+      .webp({quality: 85, effort: 6})
+      .toBuffer();
+
+    await s3Service.uploadFile(processedImage, shortenedFileName);
+
+    const imageUrl = `${FRONTEND_URL}/i/${shortId}`;
+
+    // ShareX expects a specific response format
+    res.json({
+      success: true,
+      url: imageUrl,
+      deletion_url: `${FRONTEND_URL}/delete/${shortId}`,
+    });
+  } catch (error) {
+    console.error("ShareX upload error:", error);
+    res.status(500).json({error: "Failed to upload image"});
+  }
+});
+
 // Health check
 app.get("/api/health", (req, res) => res.json({status: "ok"}));
 
