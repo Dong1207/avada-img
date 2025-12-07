@@ -93,11 +93,9 @@ app.post("/api/sharex", upload.single("image"), async (req, res) => {
 
     const imageUrl = `${FRONTEND_URL}/i/${shortId}`;
 
-    // ShareX expects a specific response format
     res.json({
       success: true,
       url: imageUrl,
-      deletion_url: `${FRONTEND_URL}/delete/${shortId}`,
     });
   } catch (error) {
     console.error("ShareX upload error:", error);
