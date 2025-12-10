@@ -276,13 +276,27 @@ function showError(message) {
   const errorEl = document.getElementById('error');
   const errorTextEl = document.getElementById('error-text');
   const imageWrapperEl = document.getElementById('image-wrapper');
+  const brandingEl = document.getElementById('branding');
 
   if (loadingEl) loadingEl.style.display = 'none';
   if (imageWrapperEl) imageWrapperEl.style.display = 'none';
+  if (brandingEl) brandingEl.style.display = 'none';
   if (errorEl) {
     errorEl.style.display = 'block';
     if (errorTextEl) errorTextEl.textContent = message;
   }
+}
+
+function showBranding() {
+  const loadingEl = document.getElementById('loading');
+  const errorEl = document.getElementById('error');
+  const imageWrapperEl = document.getElementById('image-wrapper');
+  const brandingEl = document.getElementById('branding');
+
+  if (loadingEl) loadingEl.style.display = 'none';
+  if (errorEl) errorEl.style.display = 'none';
+  if (imageWrapperEl) imageWrapperEl.style.display = 'none';
+  if (brandingEl) brandingEl.style.display = 'block';
 }
 
 function formatDimensions(width, height) {
@@ -328,7 +342,7 @@ function showImage(imageUrl, imageId) {
   const imageId = getImageIdFromUrl();
 
   if (!imageId) {
-    showError('No image ID provided in URL. Please provide a valid image path.');
+    showBranding();
     return;
   }
 
