@@ -36,7 +36,7 @@ class S3Service {
       Bucket: this.bucketName,
       Key: fileName,
       Body: fileBuffer,
-      StorageClass: "STANDARD_IA",
+      StorageClass: "INTELLIGENT_TIERING",
       ContentType: contentType,
     });
 
